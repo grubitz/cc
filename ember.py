@@ -267,12 +267,15 @@ HOLYDAY_NAMES = {
 HOLYDAY_LABELS = {
     "en": {
         "obligation": "Holyday of Obligation",
+        # CATEGORIES values; Outlook shows these to the subscriber.
+        "tiers": {"Obligation": "Obligation", "Traditional": "Traditional"},
         "transferred": "obligation transferred to Sun",
         "date_format": "%d %b",
         "calendar_name": "Holydays \u2014 {region}",
     },
     "pl": {
         "obligation": "\u015bwi\u0119to nakazane",
+        "tiers": {"Obligation": "Nakazane", "Traditional": "Tradycyjne"},
         "transferred": "obowi\u0105zek przeniesiony na niedziel\u0119",
         "date_format": "%d.%m",
         "calendar_name": "\u015awi\u0119ta \u2014 {region}",
@@ -413,7 +416,7 @@ def generate_holydays_ics(locale, lang_code):
                     f"{locale}-{key}-{d:%Y}",
                     d,
                     holyday_summary(locale, lang_code, key, tier, moved),
-                    tier,
+                    labels["tiers"][tier],
                 )
             )
 
@@ -513,6 +516,10 @@ def _self_check():
         for d in dates
     ]
     assert len(ember_uids) == len(set(ember_uids))
+
+    # Every tier a locale can emit needs a category name in every language.
+    for lang, labels in HOLYDAY_LABELS.items():
+        assert set(labels["tiers"]) == {"Obligation", "Traditional"}, lang
 
     assert fold("SUMMARY:short") == "SUMMARY:short"
     folded = fold("SUMMARY:" + "\u015a" * 60)
