@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Catholic Calendars</title>
+<title>Catholic Calendars · Kalendarze katolickie</title>
 <style>
   :root {
     --bg: #fbfaf7;
@@ -23,10 +23,15 @@
       --accent: #d99a7a;
     }
   }
+
+  /* The whole translation mechanism: elements carry lang, the root decides. */
+  html[lang="en"] [lang="pl"],
+  html[lang="pl"] [lang="en"] { display: none; }
+
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 48px 16px 72px;
+    padding: 32px 16px 72px;
     background: var(--bg);
     color: var(--fg);
     font: 16px/1.55 ui-serif, Georgia, "Times New Roman", serif;
@@ -35,6 +40,29 @@
   h1 { font-size: 1.9rem; margin: 0 0 .3em; letter-spacing: -0.01em; }
   h2 { font-size: 1.05rem; margin: 0 0 .15em; }
   .lede { color: var(--muted); margin: 0 0 2.5rem; }
+
+  .switch {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .switch button {
+    font: inherit;
+    font-size: .82rem;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .switch button[aria-pressed="true"] {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
   .cal {
     background: var(--card);
     border: 1px solid var(--rule);
@@ -58,6 +86,7 @@
   }
   .langs a { border-color: var(--accent); color: var(--accent); }
   .langs a:hover, .langs button:hover { background: var(--rule); }
+
   .note {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
@@ -79,53 +108,89 @@
 </head>
 <body>
 <main>
-  <h1>Catholic Calendars</h1>
-  <p class="lede">
+  <div class="switch">
+    <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-set-lang="pl" aria-pressed="false">Polski</button>
+  </div>
+
+  <h1 lang="en">Catholic Calendars</h1>
+  <h1 lang="pl">Kalendarze katolickie</h1>
+
+  <p class="lede" lang="en">
     Holydays of obligation and traditional feasts, as subscribable calendar
     feeds. Ten years ahead, refreshed monthly.
   </p>
+  <p class="lede" lang="pl">
+    Święta nakazane i tradycyjne jako subskrybowane kalendarze.
+    Dziesięć lat naprzód, odświeżane co miesiąc.
+  </p>
 
   <div class="cal">
-    <h2>England &amp; Wales</h2>
-    <p>
+    <h2 lang="en">England &amp; Wales</h2>
+    <h2 lang="pl">Anglia i Walia</h2>
+    <p lang="en">
       Six obligations. Epiphany and Ascension were restored to their proper
       days in 2017; Epiphany, Ss Peter &amp; Paul, the Assumption and All
       Saints move to the adjacent Sunday when they fall on a Saturday or Monday.
+    </p>
+    <p lang="pl">
+      Sześć świąt nakazanych. Objawienie Pańskie i Wniebowstąpienie przywrócono
+      do właściwych dni w 2017 r. Objawienie Pańskie, Świętych Piotra i Pawła,
+      Wniebowzięcie oraz Wszystkich Świętych przenosi się na sąsiednią niedzielę,
+      gdy wypadają w sobotę lub poniedziałek.
     </p>
     <div class="langs" data-base="engwal"></div>
   </div>
 
   <div class="cal">
-    <h2>Scotland</h2>
-    <p>
+    <h2 lang="en">Scotland</h2>
+    <h2 lang="pl">Szkocja</h2>
+    <p lang="en">
       Five obligations — Scotland did not restore Epiphany. All Saints moves
       off a Saturday but stays put on a Monday, unlike England &amp; Wales.
+    </p>
+    <p lang="pl">
+      Pięć świąt nakazanych — Szkocja nie przywróciła Objawienia Pańskiego.
+      Wszystkich Świętych przenosi się z soboty, ale w poniedziałek pozostaje
+      na miejscu, inaczej niż w Anglii i Walii.
     </p>
     <div class="langs" data-base="sco"></div>
   </div>
 
   <div class="cal">
-    <h2>Poland</h2>
-    <p>
+    <h2 lang="en">Poland</h2>
+    <h2 lang="pl">Polska</h2>
+    <p lang="en">
       Six obligations, including Corpus Christi and 1 January. St Joseph and
       Ss Peter &amp; Paul lost their obligation in 2003. No Saturday or Monday
       transfers.
+    </p>
+    <p lang="pl">
+      Sześć świąt nakazanych, w tym Boże Ciało i 1 stycznia. Świętego Józefa
+      oraz Świętych Piotra i Pawła utraciły nakaz w 2003 r. Bez przenoszenia
+      z soboty ani poniedziałku.
     </p>
     <div class="langs" data-base="pol"></div>
   </div>
 
   <div class="cal">
-    <h2>Ember days only</h2>
-    <p>
+    <h2 lang="en">Ember days only</h2>
+    <h2 lang="pl">Same Suche Dni</h2>
+    <p lang="en">
       The four sets of Wednesday, Friday and Saturday, per the 1962 rubrics.
       No holydays. Included in none of the calendars above.
+    </p>
+    <p lang="pl">
+      Cztery zestawy środy, piątku i soboty, według rubryk z 1962 r.
+      Bez świąt. Nie zawarte w żadnym z powyższych kalendarzy.
     </p>
     <div class="langs" data-base="ember"></div>
   </div>
 
   <div class="note">
-    <h3>Subscribe, don't import</h3>
-    <p>
+    <h3 lang="en">Subscribe, don't import</h3>
+    <h3 lang="pl">Subskrybuj, nie importuj</h3>
+    <p lang="en">
       Importing copies today's events and stops. Subscribing re-reads the feed,
       so the window keeps rolling forward and any correction reaches you.
       <strong>Subscribe</strong> opens your calendar app directly. Apple
@@ -133,61 +198,119 @@
       copied <code>https://</code> address pasted into
       <em>Other calendars → From URL</em>.
     </p>
+    <p lang="pl">
+      Import kopiuje dzisiejsze wydarzenia i na tym koniec. Subskrypcja
+      odczytuje kalendarz ponownie, więc okno przesuwa się naprzód, a każda
+      poprawka do Ciebie dociera. <strong>Subskrybuj</strong> otwiera aplikację
+      kalendarza. Apple Calendar i Outlook przyjmują link bezpośrednio;
+      Google Calendar wymaga skopiowanego adresu <code>https://</code>
+      wklejonego w <em>Inne kalendarze → Z adresu URL</em>.
+    </p>
 
-    <h3>Two tiers in one calendar</h3>
-    <p>
+    <h3 lang="en">Two tiers in one calendar</h3>
+    <h3 lang="pl">Dwa poziomy w jednym kalendarzu</h3>
+    <p lang="en">
       Events are tagged <code>Obligation</code> or <code>Traditional</code>.
       Obligations say so in the title, and name the Sunday when the obligation
       has been transferred off the feast's own date. Traditional feasts —
       Candlemas, the Annunciation, national patrons — carry no obligation and
       are there for the observance.
     </p>
+    <p lang="pl">
+      Wydarzenia mają znacznik <code>Obligation</code> lub
+      <code>Traditional</code>. Święta nakazane mówią o tym w tytule i wskazują
+      niedzielę, na którą przeniesiono obowiązek. Święta tradycyjne — Matki
+      Bożej Gromnicznej, Zwiastowanie, patroni krajowi — nie niosą obowiązku
+      i są tu dla samego obchodu.
+    </p>
 
-    <h3>Which locale</h3>
-    <p>
+    <h3 lang="en">Which locale</h3>
+    <h3 lang="pl">Który kalendarz</h3>
+    <p lang="en">
       The first part of the filename is whose bishops' conference sets the
       obligation, the second is the language of the titles. So
       <code>engwal-pl.ics</code> is the England &amp; Wales obligations with
       Polish titles — the right one for a Polish community in England, who
       follow the E&amp;W calendar rather than Poland's.
     </p>
+    <p lang="pl">
+      Pierwsza część nazwy pliku to konferencja episkopatu ustalająca nakaz,
+      druga to język tytułów. Czyli <code>engwal-pl.ics</code> to święta
+      nakazane Anglii i Walii z polskimi tytułami — właściwy wybór dla polskiej
+      wspólnoty w Anglii, która stosuje kalendarz Anglii i Walii, a nie polski.
+    </p>
 
     <p style="margin-top:2rem">
-      Source and dates:
+      <span lang="en">Source and dates:</span>
+      <span lang="pl">Źródło i daty:</span>
       <a class="plain" href="https://github.com/grubitz/cc">github.com/grubitz/cc</a>
     </p>
   </div>
 </main>
 
 <script>
-  const LANGS = { en: "English", pl: "Polski" };
+  const FEED_LANGS = { en: "English", pl: "Polski" };
+  const UI = {
+    subscribe: { en: "Subscribe", pl: "Subskrybuj" },
+    copy: { en: "Copy link", pl: "Kopiuj link" },
+    copied: { en: "Copied", pl: "Skopiowano" },
+  };
+
+  // Two spans, one per page language; the stylesheet shows whichever matches.
+  const bilingual = (strings) =>
+    Object.entries(strings)
+      .map(([code, text]) => `<span lang="${code}">${text}</span>`)
+      .join("");
+
   const host = location.host + location.pathname.replace(/\/[^/]*$/, "/");
 
   for (const row of document.querySelectorAll(".langs")) {
-    for (const [code, label] of Object.entries(LANGS)) {
+    for (const [code, label] of Object.entries(FEED_LANGS)) {
       const path = host + row.dataset.base + "-" + code + ".ics";
 
       const sub = document.createElement("a");
       sub.href = "webcal://" + path;
-      sub.textContent = "Subscribe · " + label;
+      sub.innerHTML = bilingual(UI.subscribe) + " · " + label;
       row.append(sub);
 
       const copy = document.createElement("button");
       copy.type = "button";
-      copy.textContent = "Copy link · " + label;
+      copy.innerHTML = bilingual(UI.copy) + " · " + label;
       copy.onclick = async () => {
         const url = location.protocol + "//" + path;
         try {
           await navigator.clipboard.writeText(url);
-          copy.textContent = "Copied";
+          copy.innerHTML = bilingual(UI.copied);
         } catch {
           copy.textContent = url;   // clipboard blocked: show it to select by hand
         }
-        setTimeout(() => (copy.textContent = "Copy link · " + label), 2500);
+        setTimeout(() => {
+          copy.innerHTML = bilingual(UI.copy) + " · " + label;
+        }, 2500);
       };
       row.append(copy);
     }
   }
+
+  function setLang(code) {
+    document.documentElement.lang = code;
+    for (const b of document.querySelectorAll("[data-set-lang]")) {
+      b.setAttribute("aria-pressed", String(b.dataset.setLang === code));
+    }
+    try { localStorage.setItem("lang", code); } catch {}
+  }
+
+  for (const b of document.querySelectorAll("[data-set-lang]")) {
+    b.onclick = () => setLang(b.dataset.setLang);
+  }
+
+  let chosen;
+  try { chosen = localStorage.getItem("lang"); } catch {}
+  setLang(
+    chosen === "pl" || chosen === "en"
+      ? chosen
+      : navigator.languages.some((l) => l.toLowerCase().startsWith("pl")) ? "pl" : "en"
+  );
 </script>
 </body>
 </html>
