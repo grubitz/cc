@@ -32,7 +32,7 @@ jobs:
       - run: python ember.py
       - run: |
           mkdir -p site
-          cp *.ics index.html site/
+          cp *.ics index.html favicon.svg site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
