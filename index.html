@@ -255,18 +255,21 @@
     <p lang="en">
       Importing copies today's events and stops. Subscribing re-reads the feed,
       so the window keeps rolling forward and any correction reaches you.
-      <strong>Subscribe</strong> opens your calendar app directly. Apple
-      Calendar and Outlook take the link as-is; Google Calendar needs the
-      copied <code>https://</code> address pasted into
-      <em>Other calendars → From URL</em>.
+      <strong>Apple / Outlook</strong> hands the feed straight to the app.
+      <strong>Google Calendar</strong> opens Google's web page to confirm.
+      On Android the Google Calendar app cannot add a calendar by URL at all —
+      use the Google Calendar button, or add the feed once on a computer and it
+      syncs down to the phone.
     </p>
     <p lang="pl">
       Import kopiuje dzisiejsze wydarzenia i na tym koniec. Subskrypcja
       odczytuje kalendarz ponownie, więc okno przesuwa się naprzód, a każda
-      poprawka do Ciebie dociera. <strong>Subskrybuj</strong> otwiera aplikację
-      kalendarza. Apple Calendar i Outlook przyjmują link bezpośrednio;
-      Google Calendar wymaga skopiowanego adresu <code>https://</code>
-      wklejonego w <em>Inne kalendarze → Z adresu URL</em>.
+      poprawka do Ciebie dociera. <strong>Apple / Outlook</strong> przekazuje
+      kalendarz prosto do aplikacji. <strong>Google Calendar</strong> otwiera
+      stronę Google z potwierdzeniem. W Androidzie aplikacja Google Calendar
+      w ogóle nie umie dodać kalendarza z adresu — użyj przycisku Google
+      Calendar albo dodaj kalendarz raz na komputerze, a zsynchronizuje się
+      z telefonem.
     </p>
 
     <h3 lang="en">Two tiers in one calendar</h3>
@@ -318,7 +321,8 @@
   };
 
   const UI = {
-    subscribe: { en: "Subscribe", pl: "Subskrybuj" },
+    apple: { en: "Apple / Outlook", pl: "Apple / Outlook" },
+    google: { en: "Google Calendar", pl: "Google Calendar" },
     copy: { en: "Copy link", pl: "Kopiuj link" },
     copied: { en: "Copied", pl: "Skopiowano" },
   };
@@ -333,16 +337,28 @@
       const path = host + card.dataset.base + "-" + code + ".ics";
       row.textContent = "";
 
-      const sub = document.createElement("a");
-      sub.href = "webcal://" + path;
-      sub.textContent = UI.subscribe[code];
-      row.append(sub);
+      const url = location.protocol + "//" + path;
+
+      // webcal:// is handled by Apple Calendar and Outlook, and by nothing at
+      // all on Android - Google Calendar can only take a URL through its web
+      // UI, which is what the cid link opens.
+      const apple = document.createElement("a");
+      apple.href = "webcal://" + path;
+      apple.textContent = UI.apple[code];
+      row.append(apple);
+
+      const google = document.createElement("a");
+      google.href =
+        "https://calendar.google.com/calendar/render?cid=" + encodeURIComponent(url);
+      google.target = "_blank";
+      google.rel = "noopener";
+      google.textContent = UI.google[code];
+      row.append(google);
 
       const copy = document.createElement("button");
       copy.type = "button";
       copy.textContent = UI.copy[code];
       copy.onclick = async () => {
-        const url = location.protocol + "//" + path;
         try {
           await navigator.clipboard.writeText(url);
           copy.textContent = UI.copied[code];
