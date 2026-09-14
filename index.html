@@ -38,7 +38,6 @@
   }
   main { max-width: 45rem; margin: 0 auto; }
   h1 { font-size: 1.9rem; margin: 0 0 .3em; letter-spacing: -0.01em; }
-  h2 { font-size: 1.05rem; margin: 0 0 .15em; }
   .lede { color: var(--muted); margin: 0 0 2.5rem; }
 
   .switch {
@@ -57,20 +56,57 @@
     background: transparent;
     color: var(--muted);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .45em;
+  }
+  /* Windows renders GB / PL as bare letters and the England, Scotland and
+     Wales subdivision flags not at all, so the written name always stays. */
+  .flag {
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+    font-size: 1.05em;
+    line-height: 1;
   }
   .switch button[aria-pressed="true"] {
     border-color: var(--accent);
     color: var(--accent);
   }
 
+  /* Flex column so each card's order can be set per language. */
+  .cals { display: flex; flex-direction: column; }
+
   .cal {
     background: var(--card);
     border: 1px solid var(--rule);
     border-radius: 10px;
-    padding: 18px 20px;
     margin-bottom: 14px;
   }
+  .cal > summary .flag { font-size: 1em; }
+  .cal > summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: .55em;
+    font-size: 1.05rem;
+  }
+  .cal > summary::-webkit-details-marker { display: none; }
+  .cal > summary::before {
+    content: "";
+    width: .42em;
+    height: .42em;
+    flex: none;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: rotate(-45deg);
+    transition: transform .15s;
+  }
+  .cal[open] > summary::before { transform: rotate(45deg); }
+  .cal > summary:hover::before { border-color: var(--accent); }
+  .cal .body { padding: 0 20px 18px; }
   .cal p { margin: 0 0 .9em; color: var(--muted); font-size: .9rem; }
+
   .langs { display: flex; flex-wrap: wrap; gap: 8px; }
   .langs a, .langs button {
     font: inherit;
@@ -109,8 +145,12 @@
 <body>
 <main>
   <div class="switch">
-    <button type="button" data-set-lang="en" aria-pressed="true">English</button>
-    <button type="button" data-set-lang="pl" aria-pressed="false">Polski</button>
+    <button type="button" data-set-lang="en" aria-pressed="true">
+      <span class="flag" aria-hidden="true">🇬🇧</span>English
+    </button>
+    <button type="button" data-set-lang="pl" aria-pressed="false">
+      <span class="flag" aria-hidden="true">🇵🇱</span>Polski
+    </button>
   </div>
 
   <h1 lang="en">Catholic Calendars</h1>
@@ -125,66 +165,88 @@
     Dziesięć lat naprzód, odświeżane co miesiąc.
   </p>
 
-  <div class="cal">
-    <h2 lang="en">England &amp; Wales</h2>
-    <h2 lang="pl">Anglia i Walia</h2>
-    <p lang="en">
-      Six obligations. Epiphany and Ascension were restored to their proper
-      days in 2017; Epiphany, Ss Peter &amp; Paul, the Assumption and All
-      Saints move to the adjacent Sunday when they fall on a Saturday or Monday.
-    </p>
-    <p lang="pl">
-      Sześć świąt nakazanych. Objawienie Pańskie i Wniebowstąpienie przywrócono
-      do właściwych dni w 2017 r. Objawienie Pańskie, Świętych Piotra i Pawła,
-      Wniebowzięcie oraz Wszystkich Świętych przenosi się na sąsiednią niedzielę,
-      gdy wypadają w sobotę lub poniedziałek.
-    </p>
-    <div class="langs" data-base="engwal"></div>
-  </div>
+  <div class="cals">
+    <details class="cal" data-base="engwal" open>
+      <summary>
+        <span class="flag" aria-hidden="true">🏴󠁧󠁢󠁥󠁮󠁧󠁿🏴󠁧󠁢󠁷󠁬󠁳󠁿</span>
+        <span lang="en">England &amp; Wales</span>
+        <span lang="pl">Anglia i Walia</span>
+      </summary>
+      <div class="body">
+        <p lang="en">
+          Six obligations. Epiphany and Ascension were restored to their proper
+          days in 2017; Epiphany, Ss Peter &amp; Paul, the Assumption and All
+          Saints move to the adjacent Sunday when they fall on a Saturday or
+          Monday.
+        </p>
+        <p lang="pl">
+          Sześć świąt nakazanych. Objawienie Pańskie i Wniebowstąpienie
+          przywrócono do właściwych dni w 2017 r. Objawienie Pańskie, Świętych
+          Piotra i Pawła, Wniebowzięcie oraz Wszystkich Świętych przenosi się
+          na sąsiednią niedzielę, gdy wypadają w sobotę lub poniedziałek.
+        </p>
+        <div class="langs"></div>
+      </div>
+    </details>
 
-  <div class="cal">
-    <h2 lang="en">Scotland</h2>
-    <h2 lang="pl">Szkocja</h2>
-    <p lang="en">
-      Five obligations — Scotland did not restore Epiphany. All Saints moves
-      off a Saturday but stays put on a Monday, unlike England &amp; Wales.
-    </p>
-    <p lang="pl">
-      Pięć świąt nakazanych — Szkocja nie przywróciła Objawienia Pańskiego.
-      Wszystkich Świętych przenosi się z soboty, ale w poniedziałek pozostaje
-      na miejscu, inaczej niż w Anglii i Walii.
-    </p>
-    <div class="langs" data-base="sco"></div>
-  </div>
+    <details class="cal" data-base="sco" open>
+      <summary>
+        <span class="flag" aria-hidden="true">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+        <span lang="en">Scotland</span>
+        <span lang="pl">Szkocja</span>
+      </summary>
+      <div class="body">
+        <p lang="en">
+          Five obligations — Scotland did not restore Epiphany. All Saints moves
+          off a Saturday but stays put on a Monday, unlike England &amp; Wales.
+        </p>
+        <p lang="pl">
+          Pięć świąt nakazanych — Szkocja nie przywróciła Objawienia Pańskiego.
+          Wszystkich Świętych przenosi się z soboty, ale w poniedziałek pozostaje
+          na miejscu, inaczej niż w Anglii i Walii.
+        </p>
+        <div class="langs"></div>
+      </div>
+    </details>
 
-  <div class="cal">
-    <h2 lang="en">Poland</h2>
-    <h2 lang="pl">Polska</h2>
-    <p lang="en">
-      Six obligations, including Corpus Christi and 1 January. St Joseph and
-      Ss Peter &amp; Paul lost their obligation in 2003. No Saturday or Monday
-      transfers.
-    </p>
-    <p lang="pl">
-      Sześć świąt nakazanych, w tym Boże Ciało i 1 stycznia. Świętego Józefa
-      oraz Świętych Piotra i Pawła utraciły nakaz w 2003 r. Bez przenoszenia
-      z soboty ani poniedziałku.
-    </p>
-    <div class="langs" data-base="pol"></div>
-  </div>
+    <details class="cal" data-base="ember" open>
+      <summary>
+        <span lang="en">Ember days only</span>
+        <span lang="pl">Same Suche Dni</span>
+      </summary>
+      <div class="body">
+        <p lang="en">
+          The four sets of Wednesday, Friday and Saturday, per the 1962 rubrics.
+          No holydays. Included in none of the other calendars.
+        </p>
+        <p lang="pl">
+          Cztery zestawy środy, piątku i soboty, według rubryk z 1962 r.
+          Bez świąt. Nie zawarte w żadnym z pozostałych kalendarzy.
+        </p>
+        <div class="langs"></div>
+      </div>
+    </details>
 
-  <div class="cal">
-    <h2 lang="en">Ember days only</h2>
-    <h2 lang="pl">Same Suche Dni</h2>
-    <p lang="en">
-      The four sets of Wednesday, Friday and Saturday, per the 1962 rubrics.
-      No holydays. Included in none of the calendars above.
-    </p>
-    <p lang="pl">
-      Cztery zestawy środy, piątku i soboty, według rubryk z 1962 r.
-      Bez świąt. Nie zawarte w żadnym z powyższych kalendarzy.
-    </p>
-    <div class="langs" data-base="ember"></div>
+    <details class="cal" data-base="pol">
+      <summary>
+        <span class="flag" aria-hidden="true">🇵🇱</span>
+        <span lang="en">Poland</span>
+        <span lang="pl">Polska</span>
+      </summary>
+      <div class="body">
+        <p lang="en">
+          Six obligations, including Corpus Christi and 1 January. St Joseph and
+          Ss Peter &amp; Paul lost their obligation in 2003. No Saturday or
+          Monday transfers.
+        </p>
+        <p lang="pl">
+          Sześć świąt nakazanych, w tym Boże Ciało i 1 stycznia. Świętego Józefa
+          oraz Świętych Piotra i Pawła utraciły nakaz w 2003 r. Bez przenoszenia
+          z soboty ani poniedziałku.
+        </p>
+        <div class="langs"></div>
+      </div>
+    </details>
   </div>
 
   <div class="note">
@@ -217,8 +279,8 @@
       are there for the observance.
     </p>
     <p lang="pl">
-      Wydarzenia mają znacznik <code>Obligation</code> lub
-      <code>Traditional</code>. Święta nakazane mówią o tym w tytule i wskazują
+      Wydarzenia mają znacznik <code>Nakazane</code> lub
+      <code>Tradycyjne</code>. Święta nakazane mówią o tym w tytule i wskazują
       niedzielę, na którą przeniesiono obowiązek. Święta tradycyjne — Matki
       Bożej Gromnicznej, Zwiastowanie, patroni krajowi — nie niosą obowiązku
       i są tu dla samego obchodu.
@@ -249,44 +311,45 @@
 </main>
 
 <script>
-  const FEED_LANGS = { en: "English", pl: "Polski" };
+  // Card order and which ones start open, per page language.
+  const LAYOUT = {
+    en: { order: ["engwal", "sco", "ember", "pol"], collapsed: ["pol"] },
+    pl: { order: ["pol", "ember", "engwal", "sco"], collapsed: ["engwal", "sco"] },
+  };
+
   const UI = {
     subscribe: { en: "Subscribe", pl: "Subskrybuj" },
     copy: { en: "Copy link", pl: "Kopiuj link" },
     copied: { en: "Copied", pl: "Skopiowano" },
   };
 
-  // Two spans, one per page language; the stylesheet shows whichever matches.
-  const bilingual = (strings) =>
-    Object.entries(strings)
-      .map(([code, text]) => `<span lang="${code}">${text}</span>`)
-      .join("");
-
   const host = location.host + location.pathname.replace(/\/[^/]*$/, "/");
 
-  for (const row of document.querySelectorAll(".langs")) {
-    for (const [code, label] of Object.entries(FEED_LANGS)) {
-      const path = host + row.dataset.base + "-" + code + ".ics";
+  // Only the feed matching the page language: an English reader has no use for
+  // a button that subscribes them to Polish event titles.
+  function renderFeeds(code) {
+    for (const card of document.querySelectorAll(".cal")) {
+      const row = card.querySelector(".langs");
+      const path = host + card.dataset.base + "-" + code + ".ics";
+      row.textContent = "";
 
       const sub = document.createElement("a");
       sub.href = "webcal://" + path;
-      sub.innerHTML = bilingual(UI.subscribe) + " · " + label;
+      sub.textContent = UI.subscribe[code];
       row.append(sub);
 
       const copy = document.createElement("button");
       copy.type = "button";
-      copy.innerHTML = bilingual(UI.copy) + " · " + label;
+      copy.textContent = UI.copy[code];
       copy.onclick = async () => {
         const url = location.protocol + "//" + path;
         try {
           await navigator.clipboard.writeText(url);
-          copy.innerHTML = bilingual(UI.copied);
+          copy.textContent = UI.copied[code];
         } catch {
           copy.textContent = url;   // clipboard blocked: show it to select by hand
         }
-        setTimeout(() => {
-          copy.innerHTML = bilingual(UI.copy) + " · " + label;
-        }, 2500);
+        setTimeout(() => { copy.textContent = UI.copy[code]; }, 2500);
       };
       row.append(copy);
     }
@@ -297,6 +360,15 @@
     for (const b of document.querySelectorAll("[data-set-lang]")) {
       b.setAttribute("aria-pressed", String(b.dataset.setLang === code));
     }
+
+    renderFeeds(code);
+
+    const { order, collapsed } = LAYOUT[code];
+    for (const card of document.querySelectorAll(".cal")) {
+      card.style.order = order.indexOf(card.dataset.base);
+      card.open = !collapsed.includes(card.dataset.base);
+    }
+
     try { localStorage.setItem("lang", code); } catch {}
   }
 
