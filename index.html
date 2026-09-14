@@ -331,30 +331,33 @@
     copied: { en: "Copied", pl: "Skopiowano" },
   };
 
-  const host = location.host + location.pathname.replace(/\/[^/]*$/, "/");
+  // Opened from disk, location gives a file:// path and every link would point
+  // at the local filesystem, so fall back to the published site.
+  const SITE = "https://grubitz.github.io/cc/";
+  const base = location.protocol.startsWith("http")
+    ? location.href.replace(/[^/]*$/, "")
+    : SITE;
 
   // Only the feed matching the page language: an English reader has no use for
   // a button that subscribes them to Polish event titles.
   function renderFeeds(code) {
     for (const card of document.querySelectorAll(".cal")) {
       const row = card.querySelector(".langs");
-      const path = host + card.dataset.base + "-" + code + ".ics";
+      const url = base + card.dataset.base + "-" + code + ".ics";
       row.textContent = "";
-
-      const url = location.protocol + "//" + path;
 
       // webcal:// is handled by Apple Calendar and Outlook, and by nothing at
       // all on Android - Google Calendar can only take a URL through its web
       // UI, which is what the cid link opens.
       const apple = document.createElement("a");
-      apple.href = "webcal://" + path;
+      apple.href = url.replace(/^https?:/, "webcal:");
       apple.textContent = UI.apple[code];
       row.append(apple);
 
       const google = document.createElement("a");
       google.href =
         "https://calendar.google.com/calendar/render?cid=" +
-        encodeURIComponent("webcal://" + path);
+        encodeURIComponent(url.replace(/^https?:/, "webcal:"));
       google.target = "_blank";
       google.rel = "noopener";
       google.textContent = UI.google[code];
