@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catholic Calendars</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --fg: #1d1b16;
+    --muted: #6b6559;
+    --rule: #e3ded2;
+    --card: #ffffff;
+    --accent: #7a2e2e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16150f;
+      --fg: #ece7db;
+      --muted: #9a9182;
+      --rule: #2e2b22;
+      --card: #1e1c15;
+      --accent: #d99a7a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 48px 16px 72px;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.55 ui-serif, Georgia, "Times New Roman", serif;
+  }
+  main { max-width: 45rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; margin: 0 0 .3em; letter-spacing: -0.01em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .15em; }
+  .lede { color: var(--muted); margin: 0 0 2.5rem; }
+  .cal {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .cal p { margin: 0 0 .9em; color: var(--muted); font-size: .9rem; }
+  .langs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .langs a, .langs button {
+    font: inherit;
+    font-size: .87rem;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    padding: 6px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--fg);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .langs a { border-color: var(--accent); color: var(--accent); }
+  .langs a:hover, .langs button:hover { background: var(--rule); }
+  .note {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-size: .88rem;
+    color: var(--muted);
+  }
+  .note h3 { font-size: .95rem; color: var(--fg); margin: 1.4em 0 .3em; }
+  .note code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .85em;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+  a.plain { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Catholic Calendars</h1>
+  <p class="lede">
+    Holydays of obligation and traditional feasts, as subscribable calendar
+    feeds. Ten years ahead, refreshed monthly.
+  </p>
+
+  <div class="cal">
+    <h2>England &amp; Wales</h2>
+    <p>
+      Six obligations. Epiphany and Ascension were restored to their proper
+      days in 2017; Epiphany, Ss Peter &amp; Paul, the Assumption and All
+      Saints move to the adjacent Sunday when they fall on a Saturday or Monday.
+    </p>
+    <div class="langs" data-base="engwal"></div>
+  </div>
+
+  <div class="cal">
+    <h2>Scotland</h2>
+    <p>
+      Five obligations — Scotland did not restore Epiphany. All Saints moves
+      off a Saturday but stays put on a Monday, unlike England &amp; Wales.
+    </p>
+    <div class="langs" data-base="sco"></div>
+  </div>
+
+  <div class="cal">
+    <h2>Poland</h2>
+    <p>
+      Six obligations, including Corpus Christi and 1 January. St Joseph and
+      Ss Peter &amp; Paul lost their obligation in 2003. No Saturday or Monday
+      transfers.
+    </p>
+    <div class="langs" data-base="pol"></div>
+  </div>
+
+  <div class="cal">
+    <h2>Ember days only</h2>
+    <p>
+      The four sets of Wednesday, Friday and Saturday, per the 1962 rubrics.
+      No holydays. Included in none of the calendars above.
+    </p>
+    <div class="langs" data-base="ember"></div>
+  </div>
+
+  <div class="note">
+    <h3>Subscribe, don't import</h3>
+    <p>
+      Importing copies today's events and stops. Subscribing re-reads the feed,
+      so the window keeps rolling forward and any correction reaches you.
+      <strong>Subscribe</strong> opens your calendar app directly. Apple
+      Calendar and Outlook take the link as-is; Google Calendar needs the
+      copied <code>https://</code> address pasted into
+      <em>Other calendars → From URL</em>.
+    </p>
+
+    <h3>Two tiers in one calendar</h3>
+    <p>
+      Events are tagged <code>Obligation</code> or <code>Traditional</code>.
+      Obligations say so in the title, and name the Sunday when the obligation
+      has been transferred off the feast's own date. Traditional feasts —
+      Candlemas, the Annunciation, national patrons — carry no obligation and
+      are there for the observance.
+    </p>
+
+    <h3>Which locale</h3>
+    <p>
+      The first part of the filename is whose bishops' conference sets the
+      obligation, the second is the language of the titles. So
+      <code>engwal-pl.ics</code> is the England &amp; Wales obligations with
+      Polish titles — the right one for a Polish community in England, who
+      follow the E&amp;W calendar rather than Poland's.
+    </p>
+
+    <p style="margin-top:2rem">
+      Source and dates:
+      <a class="plain" href="https://github.com/grubitz/cc">github.com/grubitz/cc</a>
+    </p>
+  </div>
+</main>
+
+<script>
+  const LANGS = { en: "English", pl: "Polski" };
+  const host = location.host + location.pathname.replace(/\/[^/]*$/, "/");
+
+  for (const row of document.querySelectorAll(".langs")) {
+    for (const [code, label] of Object.entries(LANGS)) {
+      const path = host + row.dataset.base + "-" + code + ".ics";
+
+      const sub = document.createElement("a");
+      sub.href = "webcal://" + path;
+      sub.textContent = "Subscribe · " + label;
+      row.append(sub);
+
+      const copy = document.createElement("button");
+      copy.type = "button";
+      copy.textContent = "Copy link · " + label;
+      copy.onclick = async () => {
+        const url = location.protocol + "//" + path;
+        try {
+          await navigator.clipboard.writeText(url);
+          copy.textContent = "Copied";
+        } catch {
+          copy.textContent = url;   // clipboard blocked: show it to select by hand
+        }
+        setTimeout(() => (copy.textContent = "Copy link · " + label), 2500);
+      };
+      row.append(copy);
+    }
+  }
+</script>
+</body>
+</html>
