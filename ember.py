@@ -349,6 +349,8 @@ def vevent(uid, d, summary, categories=None):
         f"DTSTAMP:{date.today().strftime('%Y%m%d')}T000000Z",
         f"DTSTART;VALUE=DATE:{d.strftime('%Y%m%d')}",
         f"DTEND;VALUE=DATE:{(d + timedelta(days=1)).strftime('%Y%m%d')}",
+        # An observance to note, not an appointment: never block free/busy.
+        "TRANSP:TRANSPARENT",
         f"SUMMARY:{summary}",
     ]
     if categories:
@@ -502,6 +504,7 @@ def _self_check():
 
     # UIDs must be stable across runs and unique within a calendar.
     assert vevent("x", date(2026, 1, 1), "s")[1] == f"UID:x@{UID_DOMAIN}"
+    assert "TRANSP:TRANSPARENT" in vevent("x", date(2026, 1, 1), "s")
     for locale in LOCALES:
         uids = [
             f"{locale}-{key}-{d:%Y}"
