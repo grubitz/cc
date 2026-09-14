@@ -256,19 +256,23 @@
       Importing copies today's events and stops. Subscribing re-reads the feed,
       so the window keeps rolling forward and any correction reaches you.
       <strong>Apple / Outlook</strong> hands the feed straight to the app.
-      <strong>Google Calendar</strong> opens Google's web page to confirm.
-      On Android the Google Calendar app cannot add a calendar by URL at all —
-      use the Google Calendar button, or add the feed once on a computer and it
-      syncs down to the phone.
+      <strong>Google Calendar</strong> opens Google's own page to confirm, but
+      that page is unreliable — if it refuses, the route that always works is
+      <strong>Copy link</strong>, then on a computer at calendar.google.com:
+      <em>Other calendars → + → From URL</em>. Do it there once even if you
+      only use a phone: the Android app cannot add a calendar by URL at all,
+      and a feed added on a computer syncs down to it.
     </p>
     <p lang="pl">
       Import kopiuje dzisiejsze wydarzenia i na tym koniec. Subskrypcja
       odczytuje kalendarz ponownie, więc okno przesuwa się naprzód, a każda
       poprawka do Ciebie dociera. <strong>Apple / Outlook</strong> przekazuje
       kalendarz prosto do aplikacji. <strong>Google Calendar</strong> otwiera
-      stronę Google z potwierdzeniem. W Androidzie aplikacja Google Calendar
-      w ogóle nie umie dodać kalendarza z adresu — użyj przycisku Google
-      Calendar albo dodaj kalendarz raz na komputerze, a zsynchronizuje się
+      stronę Google z potwierdzeniem, ale bywa ona zawodna — pewna droga to
+      <strong>Kopiuj link</strong>, a potem na komputerze w calendar.google.com:
+      <em>Inne kalendarze → + → Z adresu URL</em>. Zrób to tam raz, nawet jeśli
+      korzystasz tylko z telefonu: aplikacja na Androida w ogóle nie umie dodać
+      kalendarza z adresu, a kalendarz dodany na komputerze zsynchronizuje się
       z telefonem.
     </p>
 
@@ -349,7 +353,8 @@
 
       const google = document.createElement("a");
       google.href =
-        "https://calendar.google.com/calendar/render?cid=" + encodeURIComponent(url);
+        "https://calendar.google.com/calendar/render?cid=" +
+        encodeURIComponent("webcal://" + path);
       google.target = "_blank";
       google.rel = "noopener";
       google.textContent = UI.google[code];
