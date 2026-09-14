@@ -25,6 +25,10 @@ Every holyday feed carries both, tagged with `CATEGORIES`:
 - **Traditional** — the wider traditional list plus national patrons. No
   obligation.
 
+The category text follows the feed's language, not the locale, since Outlook
+shows it to the subscriber: `-pl.ics` feeds tag events `Nakazane` and
+`Tradycyjne`.
+
 A feast in both tiers is emitted once, as Obligation.
 
 ## Locale differences
