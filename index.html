@@ -122,6 +122,7 @@
     cursor: pointer;
   }
   .langs a { border-color: var(--accent); color: var(--accent); }
+  .langs a.plain-link { border-color: var(--rule); color: var(--fg); }
   .langs a:hover, .langs button:hover { background: var(--rule); }
 
   .note {
@@ -264,6 +265,12 @@
       only use a phone: the Android app cannot add a calendar by URL at all,
       and a feed added on a computer syncs down to it.
     </p>
+    <p lang="en">
+      <strong>Download</strong> saves the file instead, for importing somewhere
+      that cannot take a URL. It is a snapshot: fixed at ten years, and no
+      correction will ever reach it. Prefer it only where subscribing is
+      impossible.
+    </p>
     <p lang="pl">
       Import kopiuje dzisiejsze wydarzenia i na tym koniec. Subskrypcja
       odczytuje kalendarz ponownie, więc okno przesuwa się naprzód, a każda
@@ -275,6 +282,12 @@
       korzystasz tylko z telefonu: aplikacja na Androida w ogóle nie umie dodać
       kalendarza z adresu, a kalendarz dodany na komputerze zsynchronizuje się
       z telefonem.
+    </p>
+    <p lang="pl">
+      <strong>Pobierz</strong> zapisuje plik, gdy trzeba go zaimportować tam,
+      gdzie nie można podać adresu. To migawka: sztywne dziesięć lat i żadna
+      poprawka już do niej nie dotrze. Używaj tylko tam, gdzie subskrypcja jest
+      niemożliwa.
     </p>
 
     <h3 lang="en">Two tiers in one calendar</h3>
@@ -330,6 +343,7 @@
     google: { en: "Google Calendar", pl: "Google Calendar" },
     copy: { en: "Copy link", pl: "Kopiuj link" },
     copied: { en: "Copied", pl: "Skopiowano" },
+    download: { en: "Download", pl: "Pobierz" },
   };
 
   // Opened from disk, location gives a file:// path and every link would point
@@ -377,6 +391,13 @@
         setTimeout(() => { copy.textContent = UI.copy[code]; }, 2500);
       };
       row.append(copy);
+
+      const file = document.createElement("a");
+      file.href = url;
+      file.download = card.dataset.base + "-" + code + ".ics";
+      file.className = "plain-link";
+      file.textContent = UI.download[code];
+      row.append(file);
     }
   }
 
